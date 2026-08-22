@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>llm-eval-pipeline — Task 13 Report</title>
+<style>
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;max-width:900px;margin:32px auto;padding:0 24px;line-height:1.6;color:#1a1a1a}
+h1{border-bottom:3px solid #1f6feb;padding-bottom:8px}
+h2{margin-top:32px;color:#1f6feb;border-left:4px solid #1f6feb;padding-left:12px}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #ddd;padding:8px 10px;text-align:left;font-size:14px}
+th{background:#f6f8fa}
+code,pre{background:#f6f8fa;padding:2px 6px;border-radius:4px;font-size:13px}
+pre{padding:16px;overflow:auto}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:12px;color:#fff}
+.badge-ok{background:#238636}
+.badge-warn{background:#9e6a03}
+</style>
+<h1>llm-eval-pipeline — Task 13 Report <span class="badge badge-ok">Offline Verified</span></h1>
+<p>PyTorch 실험 + 검색 메트릭 + 오답노트 + lm-eval before/after — 2026-08-23</p>
+<p>Env: Python 3.13.3 · torch 2.6.0+cpu · transformers 5.8.0 · lm-eval 0.4.9 · <code>device cpu</code></p>
+
+<h2>0) 요약</h2>
+<table>
+<tr><th>지표</th><th>값</th><th>출처</th></tr>
+<tr><td>Synthetic QA</td><td>50</td><td>data/synthetic_qa.jsonl</td></tr>
+<tr><td>Rule pass</td><td>33/50 (66%)</td><td>out/rule_report.json</td></tr>
+<tr><td>Hit@5 (proxy)</td><td>0.66</td><td>out/metrics_report.json</td></tr>
+<tr><td>Faithfulness</td><td>0.8034</td><td>동일</td></tr>
+<tr><td>Failure rate</td><td>0.34</td><td>동일</td></tr>
+<tr><td>PyTorch tiny</td><td>100 steps · best_loss 0.4356 · loss 0.76→0.57</td><td>out/pytorch_experiment_log.json</td></tr>
+<tr><td>lm-eval gsm8k 20</td><td>gpt2 exact_match 0.05 (stderr 0.05)</td><td>out/lm_eval_raw.log</td></tr>
+</table>
+<p><strong>결론:</strong> faithfulness 높음, keyword 누락이 병목 — 다음 배치에서 answer rewriting으로 Hit@5 66→85% 목표.</p>
+
+<h2>1) PyTorch 실험</h2>
+<p><code>eval/pytorch_experiment.py</code> — 2-layer MLP (16→32→2), AdamW 1e-3, synthetic <code>y=(sum(x)&gt;0)</code>, 2×50 steps</p>
+<pre>python -m eval.pytorch_experiment --dry-run
+# torch 2.6.0+cpu, transformers 5.8.0, forward loss ~0.6, PASS
+
+python -m eval.pytorch_experiment --epochs 2 --steps-per-epoch 50
+# step 1 loss 0.7615 acc 0.375 → step 100 loss 0.5788 acc 0.75
+# best_loss 0.4356, 0.1s elapsed</pre>
+<p>로그: <code>out/pytorch_experiment_log.json</code> (11 entries). <code>--dry-run</code>은 훈련 스킵, CI 경량화 충족.</p>
+
+<h2>2) 검색 메트릭</h2>
+<p><code>eval/metrics.py</code> — <code>python -m eval.metrics</code></p>
+<table>
+<tr><th>Metric</th><th>Value</th><th>Details</th></tr>
+<tr><td>Hit@5</td><td>0.66 (33/50)</td><td>proxy-expected_keyword, retrieved_map 주입 시 실제 Hit@k로 전환</td></tr>
+<tr><td>Faithfulness</td><td>0.8034 (min 0.50 max 1.00)</td><td>numeric 50% + token 50% blended</td></tr>
+<tr><td>Failure rate</td><td>0.34 (17/50)</td><td>by_rule: expected_keyword 17</td></tr>
+</table>
+
+<h2>3) 오답노트 (10선)</h2>
+<p><code>eval/wrong_note.md</code> — Rule 17 fail 전량 <code>expected_keyword</code>. 질문 명사가 답변에 재등장하지 않음, 동의어 불일치가 주원인. 4개 개선 액션: answer header 강제, 동의어 사전 15쌍, embedding Hit@5, judge relevance 이원화.</p>
+
+<h2>4) lm-eval harness</h2>
+<p><code>lm_eval --model hf --model_args pretrained=gpt2,device=cpu --tasks gsm8k --limit 20</code> (2026-08-23 02:57, 62초)</p>
+<pre>hf (pretrained=gpt2,device=cpu), limit 20
+|gsm8k|3|flexible-extract|5|exact_match| 0.05 | 0.05|
+|     | |strict-match    |5|exact_match| 0.05 | 0.05|</pre>
+<p>truncation 11/20 (1147→768). 전체 로그 <code>out/lm_eval_raw.log</code> (23818 bytes), 하단 20줄은 <code>eval/lm_eval_log.md</code>에 verbatim.</p>
+<h3>Before / After</h3>
+<table>
+<tr><th>구분</th><th>Value (exact_match)</th><th>근거</th></tr>
+<tr><td>Before (gpt2 baseline, limit 20)</td><td><strong>0.05</strong> (stderr 0.05)</td><td>out/lm_eval_raw.log 실측</td></tr>
+<tr><td>After (목표, 보강 후)</td><td>0.10 (목표)</td><td>Hit@5 66→80 개선 근거, limit 100 재측정 예정</td></tr>
+<tr><td>Offline Before (Hit@5/Faith/Fail)</td><td>0.66 / 0.8034 / 0.34</td><td>out/metrics_report.json</td></tr>
+<tr><td>Offline After (목표)</td><td>0.85 / 0.88 / 0.15</td><td>wrong_note 패치 후 재계산 예정</td></tr>
+</table>
+
+<h2>5) Verification</h2>
+<pre>pytest -q         # 30+ tests
+ruff check .
+python -m eval.pytorch_experiment --dry-run
+python -m eval.metrics
+Get-Content out/lm_eval_raw.log | Select-Object -Last 20</pre>
+
+<h2>6) Artifacts</h2>
+<table>
+<tr><th>Path</th><th>역할</th></tr>
+<tr><td>eval/pytorch_experiment.py</td><td>Tiny MLP + --dry-run</td></tr>
+<tr><td>eval/metrics.py</td><td>Hit@5 / Faithfulness / Failure rate</td></tr>
+<tr><td>eval/wrong_note.md</td><td>오답 10표</td></tr>
+<tr><td>eval/lm_eval_log.md</td><td>하단 20줄 + before/after</td></tr>
+<tr><td>out/pytorch_experiment_log.json</td><td>100-step trajectory</td></tr>
+<tr><td>out/metrics_report.json</td><td>metrics JSON</td></tr>
+<tr><td>out/lm_eval_raw.log</td><td>full lm-eval stdout</td></tr>
+</table>
+<p style="color:#666;font-size:13px">Offline/Online 경계 유지: torch/lm-eval은 offline 검증만, RAGAS는 rag-ops-console(Task 14)에서 구현.</p>
+</html>
