@@ -1,0 +1,266 @@
+{
+  "total": 50,
+  "passed": 33,
+  "failed": 17,
+  "taxonomy": {
+    "expected_keyword": [
+      {
+        "index": 2,
+        "reason": "no keyword overlap: question keywords ['atlas', 'api', 'rate', 'limit', 'happens', 'exceeded'] not in answer",
+        "question": "What is the Atlas API rate limit and what happens when exceeded?"
+      },
+      {
+        "index": 7,
+        "reason": "no keyword overlap: question keywords ['원격근무', '검토되나'] not in answer",
+        "question": "원격근무 정책은 언제 검토되나?"
+      },
+      {
+        "index": 8,
+        "reason": "no keyword overlap: question keywords ['입사', '1년', '이상', '직원', '연차', '며칠'] not in answer",
+        "question": "입사 1년 이상 직원의 연차는 며칠인가?"
+      },
+      {
+        "index": 10,
+        "reason": "no keyword overlap: question keywords ['ml', 'training', 'optimizer', 'learning', 'rate'] not in answer",
+        "question": "ML training optimizer와 learning rate는 무엇인가?"
+      },
+      {
+        "index": 11,
+        "reason": "no keyword overlap: question keywords ['http', '429', 'atlas', 'api'] not in answer",
+        "question": "What does HTTP 429 mean in Atlas API?"
+      },
+      {
+        "index": 12,
+        "reason": "no keyword overlap: question keywords ['gdpr', 'user', 'rights', '5가지'] not in answer",
+        "question": "GDPR에서 user rights 5가지는?"
+      },
+      {
+        "index": 14,
+        "reason": "no keyword overlap: question keywords ['경조사', '휴가'] not in answer",
+        "question": "경조사 휴가는 얼마인가?"
+      },
+      {
+        "index": 15,
+        "reason": "no keyword overlap: question keywords ['경비', '청구', '절차', '3단계'] not in answer",
+        "question": "경비 청구 절차 3단계는?"
+      },
+      {
+        "index": 20,
+        "reason": "no keyword overlap: question keywords ['p1', '에스컬레이션', '절차'] not in answer",
+        "question": "P1 에스컬레이션 절차는?"
+      },
+      {
+        "index": 25,
+        "reason": "no keyword overlap: question keywords ['경비', '한도', '금지', '항목'] not in answer",
+        "question": "월 경비 한도와 금지 항목은?"
+      },
+      {
+        "index": 27,
+        "reason": "no keyword overlap: question keywords ['재현성', 'reproducibility', '위해', '로그하나'] not in answer",
+        "question": "재현성(reproducibility)을 위해 무엇을 로그하나?"
+      },
+      {
+        "index": 29,
+        "reason": "no keyword overlap: question keywords ['고객', '지원', '채널', '3가지'] not in answer",
+        "question": "고객 지원 채널 3가지는?"
+      },
+      {
+        "index": 34,
+        "reason": "no keyword overlap: question keywords ['경비', '지급일', '문의처'] not in answer",
+        "question": "경비 지급일과 문의처는?"
+      },
+      {
+        "index": 35,
+        "reason": "no keyword overlap: question keywords ['환경', '프로모션', '배포', '전략'] not in answer",
+        "question": "환경 프로모션과 배포 전략은?"
+      },
+      {
+        "index": 41,
+        "reason": "no keyword overlap: question keywords ['incident', 'response', 'containment', '이후', '단계'] not in answer",
+        "question": "Incident response의 containment 이후 단계는 무엇인가?"
+      },
+      {
+        "index": 42,
+        "reason": "no keyword overlap: question keywords ['non', 'adequate', '국가로', '데이터', '이전', '하나'] not in answer",
+        "question": "Non-adequate 국가로의 데이터 이전은 어떻게 하나?"
+      },
+      {
+        "index": 43,
+        "reason": "no keyword overlap: question keywords ['devops', 'ci', 'cd', '파이프라인', '단계'] not in answer",
+        "question": "DevOps CI/CD 파이프라인 단계는?"
+      }
+    ]
+  },
+  "failures": [
+    {
+      "index": 2,
+      "question": "What is the Atlas API rate limit and what happens when exceeded?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['atlas', 'api', 'rate', 'limit', 'happens', 'exceeded'] not in answer"
+      }
+    },
+    {
+      "index": 7,
+      "question": "원격근무 정책은 언제 검토되나?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['원격근무', '검토되나'] not in answer"
+      }
+    },
+    {
+      "index": 8,
+      "question": "입사 1년 이상 직원의 연차는 며칠인가?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['입사', '1년', '이상', '직원', '연차', '며칠'] not in answer"
+      }
+    },
+    {
+      "index": 10,
+      "question": "ML training optimizer와 learning rate는 무엇인가?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['ml', 'training', 'optimizer', 'learning', 'rate'] not in answer"
+      }
+    },
+    {
+      "index": 11,
+      "question": "What does HTTP 429 mean in Atlas API?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['http', '429', 'atlas', 'api'] not in answer"
+      }
+    },
+    {
+      "index": 12,
+      "question": "GDPR에서 user rights 5가지는?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['gdpr', 'user', 'rights', '5가지'] not in answer"
+      }
+    },
+    {
+      "index": 14,
+      "question": "경조사 휴가는 얼마인가?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['경조사', '휴가'] not in answer"
+      }
+    },
+    {
+      "index": 15,
+      "question": "경비 청구 절차 3단계는?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['경비', '청구', '절차', '3단계'] not in answer"
+      }
+    },
+    {
+      "index": 20,
+      "question": "P1 에스컬레이션 절차는?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['p1', '에스컬레이션', '절차'] not in answer"
+      }
+    },
+    {
+      "index": 25,
+      "question": "월 경비 한도와 금지 항목은?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['경비', '한도', '금지', '항목'] not in answer"
+      }
+    },
+    {
+      "index": 27,
+      "question": "재현성(reproducibility)을 위해 무엇을 로그하나?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['재현성', 'reproducibility', '위해', '로그하나'] not in answer"
+      }
+    },
+    {
+      "index": 29,
+      "question": "고객 지원 채널 3가지는?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['고객', '지원', '채널', '3가지'] not in answer"
+      }
+    },
+    {
+      "index": 34,
+      "question": "경비 지급일과 문의처는?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['경비', '지급일', '문의처'] not in answer"
+      }
+    },
+    {
+      "index": 35,
+      "question": "환경 프로모션과 배포 전략은?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['환경', '프로모션', '배포', '전략'] not in answer"
+      }
+    },
+    {
+      "index": 41,
+      "question": "Incident response의 containment 이후 단계는 무엇인가?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['incident', 'response', 'containment', '이후', '단계'] not in answer"
+      }
+    },
+    {
+      "index": 42,
+      "question": "Non-adequate 국가로의 데이터 이전은 어떻게 하나?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['non', 'adequate', '국가로', '데이터', '이전', '하나'] not in answer"
+      }
+    },
+    {
+      "index": 43,
+      "question": "DevOps CI/CD 파이프라인 단계는?",
+      "failed_rules": [
+        "expected_keyword"
+      ],
+      "reasons": {
+        "expected_keyword": "no keyword overlap: question keywords ['devops', 'ci', 'cd', '파이프라인', '단계'] not in answer"
+      }
+    }
+  ]
+}

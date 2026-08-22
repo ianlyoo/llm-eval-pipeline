@@ -1,0 +1,45 @@
+=== Rule Filter Test Log ===
+Input: data\synthetic_qa.jsonl (50 entries)
+Original total: 50 passed: 33 failed: 17
+Original taxonomy (failures by rule):
+  expected_keyword: 17 cases
+    - index 2: no keyword overlap: question keywords ['atlas', 'api', 'rate', 'limit', 'happens', 'exceeded'] not in answer
+    - index 7: no keyword overlap: question keywords ['원격근무', '검토되나'] not in answer
+    - index 8: no keyword overlap: question keywords ['입사', '1년', '이상', '직원', '연차', '며칠'] not in answer
+    ... and 14 more
+
+--- Corrupted 5 cases verification ---
+[5] source_chunks empty array
+  question: Batch size, epochs, early stopping 설정은?
+  CAUGHT: 3 rule(s) failed -> ['citation_exists', 'source_coverage', 'unsupported_answer']
+    - citation_exists: source_chunks missing or empty — no citation
+    - source_coverage: source_chunks empty — coverage 0
+    - unsupported_answer: no source_chunks to verify numeric coverage
+
+[10] reference_answer = ""
+  question: ML training optimizer와 learning rate는 무엇인가?
+  CAUGHT: 4 rule(s) failed -> ['empty_answer', 'formatting_violation', 'unsupported_answer', 'expected_keyword']
+    - empty_answer: reference_answer empty/whitespace
+    - formatting_violation: too short: 0 chars <10
+    - unsupported_answer: empty answer — unsupported
+    - expected_keyword: question or answer empty
+
+[15] reference_answer = fake numeric "매출 999조 원"
+  question: 경비 청구 절차 3단계는?
+  CAUGHT: 2 rule(s) failed -> ['unsupported_answer', 'expected_keyword']
+    - unsupported_answer: numeric tokens not in source: ['999', '888']
+    - expected_keyword: no keyword overlap: question keywords ['경비', '청구', '절차', '3단계'] not in answer
+
+[20] keyword missing answer
+  question: P1 에스컬레이션 절차는?
+  CAUGHT: 1 rule(s) failed -> ['expected_keyword']
+    - expected_keyword: no keyword overlap: question keywords ['p1', '에스컬레이션', '절차'] not in answer
+
+[25] citation/doc_id deletion
+  question: 월 경비 한도와 금지 항목은?
+  CAUGHT: 2 rule(s) failed -> ['citation_exists', 'expected_keyword']
+    - citation_exists: source_chunks[0] missing doc_id/chunk_id
+    - expected_keyword: no keyword overlap: question keywords ['경비', '한도', '금지', '항목'] not in answer
+
+Result: PASS — 5/5 corrupted caught: True
+Report generated: out\rule_report.json

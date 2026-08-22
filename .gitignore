@@ -23,6 +23,9 @@ out/*.log
 !out/.gitkeep
 !out/rag_baseline.log
 !out/synthetic_qa_sample.md
+!out/rule_filter_test.log
+out/*.json
+!out/rule_report.json
 
 # OS
 .DS_Store
