@@ -61,6 +61,28 @@ llm-eval-pipeline/
 └── requirements.txt
 ```
 
+## 합성 QA 생성 (Synthetic QA)
+
+`eval/synthetic_data.py` — 문서 청크에서 `{question, reference_answer, source_chunks[], category, difficulty}` JSONL을 생성한다. **source_chunks 없이 Q/A만 생성하면 FAIL** — 모든 synthetic QA는 실제 청크에서 추출된 근거를 강제 포함한다.
+
+- **기본 경로 (offline, API 키 불필요):** rule-based 패턴 생성 — 각 청크에서 문장·수치·절차를 추출해 질문 템플릿을 생성한다. 수치가 있는 문장 → 수치 질문, 절차 목록 → 절차 질문, 정의 문장 → 정의 질문. 템플릿 최소 6종(`numeric_fact`, `procedure`, `definition`, `policy_condition`, `sla_time`, `comparison`), 10청크 × 5질문 = 50개, 청크당 최소 3개 서로 다른 질문, 중복률 <20% (정확한 question 문자열 기준 `unique_ratio ≥ 0.8`를 코드에서 계산·검증).
+
+```bash
+python -m eval.synthetic_data --chunks data/chunks.jsonl --output data/synthetic_qa.jsonl --count 50 --seed 42
+cat data/synthetic_qa.jsonl | head -5
+```
+
+- **LLM 옵션 (Featherless / Grok 실험):** `--llm-provider featherless|grok` 플래그로 OpenAI-호환 API 호출 경로를 제공한다. 프롬프트 템플릿(`LLM_PROMPT_TEMPLATE`)에 `source_chunks 근거 강제`를 명시하며, API 키(`FEATHERLESS_API_KEY` / `XAI_API_KEY`)가 없거나 호출 실패 시 자동으로 rule-based 폴백한다. README에 언급된 `Featherless/Grok` 실험은 이 옵션을 통해 재현 가능하며, 기본 CI 경로는 항상 offline rule-based로 동작한다.
+
+```bash
+# Featherless 예시 (키 있을 때만; 없으면 폴백)
+FEATHERLESS_API_KEY=... python -m eval.synthetic_data --llm-provider featherless --chunks data/chunks.jsonl --output data/synthetic_qa.jsonl --count 50
+# Grok (xAI) 예시
+XAI_API_KEY=... python -m eval.synthetic_data --llm-provider grok --model grok-2-latest --chunks data/chunks.jsonl --output data/synthetic_qa.jsonl --count 50
+```
+
+생성된 `data/synthetic_qa.jsonl`은 Task 11(rule), 12(judge), 13(pytorch), 15(runtime)가 그대로 consume하는 안정적인 스키마이며, 수동 검수 샘플은 `out/synthetic_qa_sample.md`에 5개 원문 + PASS/FAIL 코멘트와 중복률 로그를 포함한다.
+
 ## 설치
 
 ```bash

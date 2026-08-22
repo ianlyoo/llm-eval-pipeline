@@ -16,11 +16,13 @@ build/
 # Data (large artifacts — keep samples only)
 data/*.jsonl
 !data/chunks.jsonl
+!data/synthetic_qa.jsonl
 data/*.parquet
 data/raw/
 out/*.log
 !out/.gitkeep
 !out/rag_baseline.log
+!out/synthetic_qa_sample.md
 
 # OS
 .DS_Store
