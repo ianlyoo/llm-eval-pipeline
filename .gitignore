@@ -24,8 +24,12 @@ out/*.log
 !out/rag_baseline.log
 !out/synthetic_qa_sample.md
 !out/rule_filter_test.log
+!out/judge_reliability.log
 out/*.json
 !out/rule_report.json
+out/*.jsonl
+!out/judge_scores.jsonl
+!out/disagreement_cases.jsonl
 
 # OS
 .DS_Store

@@ -1,0 +1,79 @@
+Judge reliability - 10 samples × 3 runs (seed=42)
+Input: data\synthetic_qa.jsonl  Profiles: default with noise (temp simulation)
+
+Sample idx=40 q="Data privacy 6 principles는?"
+  correctness: scores [5, 5, 5] var=0.0000
+  groundedness: scores [5, 5, 5] var=0.0000
+  relevance: scores [2, 2, 2] var=0.0000
+  completeness: scores [5, 5, 5] var=0.0000
+  latency_ms avg=1.0 tokens_est avg=80
+
+Sample idx=7 q="원격근무 정책은 언제 검토되나?"
+  correctness: scores [5, 5, 5] var=0.0000
+  groundedness: scores [5, 5, 5] var=0.0000
+  relevance: scores [1, 2, 1] var=0.2222
+  completeness: scores [5, 5, 5] var=0.0000
+  latency_ms avg=1.0 tokens_est avg=64
+
+Sample idx=1 q="자동 롤백 조건은?"
+  correctness: scores [5, 5, 5] var=0.0000
+  groundedness: scores [5, 5, 4] var=0.2222
+  relevance: scores [3, 3, 3] var=0.0000
+  completeness: scores [5, 5, 5] var=0.0000
+  latency_ms avg=1.0 tokens_est avg=63
+
+Sample idx=17 q="미사용 연차 이월과 연차 촉진 제도는?"
+  correctness: scores [5, 5, 4] var=0.2222
+  groundedness: scores [5, 5, 5] var=0.0000
+  relevance: scores [5, 5, 5] var=0.0000
+  completeness: scores [5, 5, 5] var=0.0000
+  latency_ms avg=1.0 tokens_est avg=72
+
+Sample idx=15 q="경비 청구 절차 3단계는?"
+  correctness: scores [5, 5, 5] var=0.0000
+  groundedness: scores [5, 5, 5] var=0.0000
+  relevance: scores [1, 1, 1] var=0.0000
+  completeness: scores [4, 5, 4] var=0.2222
+  latency_ms avg=1.0 tokens_est avg=73
+
+Sample idx=14 q="경조사 휴가는 얼마인가?"
+  correctness: scores [5, 5, 5] var=0.0000
+  groundedness: scores [5, 5, 5] var=0.0000
+  relevance: scores [1, 1, 1] var=0.0000
+  completeness: scores [5, 5, 4] var=0.2222
+  latency_ms avg=1.0 tokens_est avg=58
+
+Sample idx=8 q="입사 1년 이상 직원의 연차는 며칠인가?"
+  correctness: scores [5, 5, 5] var=0.0000
+  groundedness: scores [5, 5, 5] var=0.0000
+  relevance: scores [1, 2, 1] var=0.2222
+  completeness: scores [5, 5, 5] var=0.0000
+  latency_ms avg=1.0 tokens_est avg=64
+
+Sample idx=6 q="Acme Corp의 원격근무 핵심 시간(core hours)은 언제인가?"
+  correctness: scores [5, 5, 5] var=0.0000
+  groundedness: scores [5, 5, 5] var=0.0000
+  relevance: scores [2, 2, 2] var=0.0000
+  completeness: scores [5, 5, 5] var=0.0000
+  latency_ms avg=1.0 tokens_est avg=75
+
+Sample idx=34 q="경비 지급일과 문의처는?"
+  correctness: scores [5, 5, 5] var=0.0000
+  groundedness: scores [5, 5, 5] var=0.0000
+  relevance: scores [1, 1, 1] var=0.0000
+  completeness: scores [4, 5, 5] var=0.2222
+  latency_ms avg=1.0 tokens_est avg=70
+
+Sample idx=5 q="Batch size, epochs, early stopping 설정은?"
+  correctness: scores [5, 5, 5] var=0.0000
+  groundedness: scores [5, 5, 5] var=0.0000
+  relevance: scores [4, 4, 4] var=0.0000
+  completeness: scores [5, 4, 5] var=0.2222
+  latency_ms avg=1.0 tokens_est avg=85
+
+Overall mean variance: 0.0444  max: 0.2222
+Variance check PASS (<1.0)
+
+Disagreement: 10/10 cases with max_diff >=1 (profiles deterministic-strict vs deterministic-lenient)
+Cost/latency: avg latency 1.0ms, avg tokens 70, total cost $0.000000
+Outputs: out\judge_scores.jsonl (30 lines), out\disagreement_cases.jsonl (10 lines)
