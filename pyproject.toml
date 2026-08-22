@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-eval-pipeline"
+version = "0.1.0"
+description = "Offline LLM evaluation pipeline — synthetic data, rule filter, LLM judge, taxonomy, lm-eval before/after"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Youngin (Ian) Lyoo" }]
+dependencies = []
+
+[project.optional-dependencies]
+# Heavy eval deps — intentionally NOT in requirements.txt core to keep CI light
+eval = [
+    "torch>=2.4.0",
+    "lm-eval==0.4.9",
+    "transformers>=4.45.0",
+    "datasets>=3.0.0",
+]
+dev = [
+    "pytest>=8.3.5",
+    "ruff>=0.11.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = []
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.setuptools.packages.find]
+include = ["rag*", "eval*"]

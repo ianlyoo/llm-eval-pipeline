@@ -1,0 +1,13 @@
+# Core — CI must stay light (no torch/lm-eval here)
+pytest>=8.3.5
+ruff>=0.11.0
+
+# Light runtime deps (optional future use, keep installable without heavy deps)
+# openai>=1.68.0  # uncomment when LLM Judge needs live API; keep optional for offline CI
+# pydantic>=2.10.0
+# jinja2>=3.1.0
+
+# Heavy deps — DO NOT add to core (install via pyproject optional-dependencies [eval])
+# torch>=2.4.0  -> pip install -e ".[eval]"
+# lm-eval==0.4.9 -> pip install -e ".[eval]"
+# transformers>=4.45.0
