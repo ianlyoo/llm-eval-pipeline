@@ -1,0 +1,22 @@
+[
+  {"qid": "q01", "query": "What are the core hours for remote work?", "relevant_doc_ids": ["01_company_policy"]},
+  {"qid": "q02", "query": "How to request remote work at Acme?", "relevant_doc_ids": ["01_company_policy"]},
+  {"qid": "q03", "query": "Nimbus Note pricing for Team plan", "relevant_doc_ids": ["02_product_faq"]},
+  {"qid": "q04", "query": "How does offline mode work in Nimbus Note?", "relevant_doc_ids": ["02_product_faq"]},
+  {"qid": "q05", "query": "Atlas API rate limit per minute", "relevant_doc_ids": ["03_tech_api_guide"]},
+  {"qid": "q06", "query": "Atlas API authentication header", "relevant_doc_ids": ["03_tech_api_guide"]},
+  {"qid": "q07", "query": "연차 부여 기준 1년 이상 직원은 며칠?", "relevant_doc_ids": ["04_hr_vacation"]},
+  {"qid": "q08", "query": "반차와 병가 정책 알려줘", "relevant_doc_ids": ["04_hr_vacation"]},
+  {"qid": "q09", "query": "SEV1 incident response time", "relevant_doc_ids": ["05_security_incident"]},
+  {"qid": "q10", "query": "Steps after containment in incident playbook", "relevant_doc_ids": ["05_security_incident"]},
+  {"qid": "q11", "query": "ML training optimizer and learning rate", "relevant_doc_ids": ["06_ml_training"]},
+  {"qid": "q12", "query": "What dataset split ratio is used for ML training?", "relevant_doc_ids": ["06_ml_training"]},
+  {"qid": "q13", "query": "고객 지원 P1 SLA 첫 응답 시간", "relevant_doc_ids": ["07_customer_support"]},
+  {"qid": "q14", "query": "환불 정책 7일 이후 어떻게 되나요?", "relevant_doc_ids": ["07_customer_support"]},
+  {"qid": "q15", "query": "GDPR right to be forgotten request handling time", "relevant_doc_ids": ["08_data_privacy"]},
+  {"qid": "q16", "query": "Data retention period for logs under privacy policy", "relevant_doc_ids": ["08_data_privacy"]},
+  {"qid": "q17", "query": "Kubernetes deployment strategy and Helm", "relevant_doc_ids": ["09_devops_deploy"]},
+  {"qid": "q18", "query": "SLO availability and latency target", "relevant_doc_ids": ["09_devops_deploy"]},
+  {"qid": "q19", "query": "경비 청구 식대 한도와 숙박 한도", "relevant_doc_ids": ["10_finance_expense"]},
+  {"qid": "q20", "query": "해외 출장 승인 절차는?", "relevant_doc_ids": ["10_finance_expense"]}
+]

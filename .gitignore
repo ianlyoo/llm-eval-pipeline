@@ -15,10 +15,12 @@ build/
 
 # Data (large artifacts — keep samples only)
 data/*.jsonl
+!data/chunks.jsonl
 data/*.parquet
 data/raw/
 out/*.log
 !out/.gitkeep
+!out/rag_baseline.log
 
 # OS
 .DS_Store

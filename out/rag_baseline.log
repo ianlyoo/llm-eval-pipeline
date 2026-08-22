@@ -1,0 +1,261 @@
+========================================================================
+RAG Baseline Log — lightweight lexical retrieval (TF-IDF, no embeddings)
+========================================================================
+
+Chunks file: C:\Users\torch\Documents\code\llm-eval-pipeline\data\chunks.jsonl
+Total chunks: 10
+Docs: 10 -> ['01_company_policy', '02_product_faq', '03_tech_api_guide', '04_hr_vacation', '05_security_incident', '06_ml_training', '07_customer_support', '08_data_privacy', '09_devops_deploy', '10_finance_expense']
+  01_company_policy::chunk-0000 doc=01_company_policy tokens=155 chars=1047
+  02_product_faq::chunk-0000 doc=02_product_faq tokens=147 chars=946
+  03_tech_api_guide::chunk-0000 doc=03_tech_api_guide tokens=153 chars=996
+  04_hr_vacation::chunk-0000 doc=04_hr_vacation tokens=106 chars=414
+  05_security_incident::chunk-0000 doc=05_security_incident tokens=134 chars=932
+  06_ml_training::chunk-0000 doc=06_ml_training tokens=118 chars=825
+  07_customer_support::chunk-0000 doc=07_customer_support tokens=96 chars=432
+  08_data_privacy::chunk-0000 doc=08_data_privacy tokens=110 chars=772
+  09_devops_deploy::chunk-0000 doc=09_devops_deploy tokens=116 chars=767
+  10_finance_expense::chunk-0000 doc=10_finance_expense tokens=97 chars=405
+
+Token counts: min=96 max=155 avg=123.2
+Chunks exceeding 512 tokens: 0 (must be 0)
+
+Overlap sanity (600 tokens, 512/50): 2 chunks, sizes [512, 138]
+
+LexicalIndex built: N=10, vocab=696
+
+QA file: C:\Users\torch\Documents\code\llm-eval-pipeline\data\qa_smoke.json with 20 queries
+
+[q01] query: What are the core hours for remote work?
+  relevant doc(s): ['01_company_policy']
+  retrieved top-5 doc_ids: ['01_company_policy', '05_security_incident', '08_data_privacy', '09_devops_deploy', '02_product_faq'] scores: [0.347181, 0.073168, 0.063351, 0.046554, 0.033668]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'What are the core hours for remote work?'. Key evidence: # Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible remote work to promote work-life balance while mai
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.347181 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.073168 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+    cite -> 08_data_privacy 08_data_privacy::chunk-0000 score=0.063351 snippet="# Data Privacy & GDPR Compliance ## Principles - Lawfulness, purpose limitation,..."
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.046554 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.033668 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+
+[q02] query: How to request remote work at Acme?
+  relevant doc(s): ['01_company_policy']
+  retrieved top-5 doc_ids: ['01_company_policy', '08_data_privacy', '02_product_faq', '03_tech_api_guide', '06_ml_training'] scores: [0.384493, 0.074209, 0.058102, 0.046799, 0.035113]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'How to request remote work at Acme?'. Key evidence: # Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible remote work to promote work-life balance while maintain
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.384493 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 08_data_privacy 08_data_privacy::chunk-0000 score=0.074209 snippet="# Data Privacy & GDPR Compliance ## Principles - Lawfulness, purpose limitation,..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.058102 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.046799 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 06_ml_training 06_ml_training::chunk-0000 score=0.035113 snippet="# ML Model Training Guide (Internal) ## Environment - Python 3.11, PyTorch 2.4, ..."
+
+[q03] query: Nimbus Note pricing for Team plan
+  relevant doc(s): ['02_product_faq']
+  retrieved top-5 doc_ids: ['02_product_faq', '09_devops_deploy', '08_data_privacy', '05_security_incident', '01_company_policy'] scores: [0.342622, 0.053912, 0.027241, 0.025022, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'Nimbus Note pricing for Team plan'. Key evidence: # Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based note-taking and task management app with real-time col
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.342622 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.053912 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+    cite -> 08_data_privacy 08_data_privacy::chunk-0000 score=0.027241 snippet="# Data Privacy & GDPR Compliance ## Principles - Lawfulness, purpose limitation,..."
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.025022 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.0 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+
+[q04] query: How does offline mode work in Nimbus Note?
+  relevant doc(s): ['02_product_faq']
+  retrieved top-5 doc_ids: ['02_product_faq', '01_company_policy', '05_security_incident', '09_devops_deploy', '06_ml_training'] scores: [0.318335, 0.131954, 0.02491, 0.015105, 0.013572]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'How does offline mode work in Nimbus Note?'. Key evidence: # Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based note-taking and task management app with real
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.318335 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.131954 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.02491 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.015105 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+    cite -> 06_ml_training 06_ml_training::chunk-0000 score=0.013572 snippet="# ML Model Training Guide (Internal) ## Environment - Python 3.11, PyTorch 2.4, ..."
+
+[q05] query: Atlas API rate limit per minute
+  relevant doc(s): ['03_tech_api_guide']
+  retrieved top-5 doc_ids: ['03_tech_api_guide', '09_devops_deploy', '02_product_faq', '01_company_policy', '04_hr_vacation'] scores: [0.361027, 0.03069, 0.025765, 0.0, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'Atlas API rate limit per minute'. Key evidence: # Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Authentication - Header: `Authorization: Bearer <API_KEY>` - 
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.361027 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.03069 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.025765 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.0 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.0 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+
+[q06] query: Atlas API authentication header
+  relevant doc(s): ['03_tech_api_guide']
+  retrieved top-5 doc_ids: ['03_tech_api_guide', '01_company_policy', '02_product_faq', '04_hr_vacation', '05_security_incident'] scores: [0.327939, 0.0, 0.0, 0.0, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'Atlas API authentication header'. Key evidence: # Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Authentication - Header: `Authorization: Bearer <API_KEY>` - 
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.327939 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.0 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.0 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.0 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.0 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+
+[q07] query: 연차 부여 기준 1년 이상 직원은 며칠?
+  relevant doc(s): ['04_hr_vacation']
+  retrieved top-5 doc_ids: ['04_hr_vacation', '01_company_policy', '02_product_faq', '03_tech_api_guide', '05_security_incident'] scores: [0.324096, 0.0, 0.0, 0.0, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Query '연차 부여 기준 1년 이상 직원은 며칠?'에 대한 관련 근거를 5개 청크에서 찾았습니다. 주요 근거: # 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상: 15일 기본 + 근속 2년마다 1일 추가, 최대 25일. ## 휴가 종류 - 연차, 반차(오전/오후 4시간), 병가(유급 5일/年, 
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.324096 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.0 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.0 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.0 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.0 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+
+[q08] query: 반차와 병가 정책 알려줘
+  relevant doc(s): ['04_hr_vacation']
+  retrieved top-5 doc_ids: ['04_hr_vacation', '07_customer_support', '01_company_policy', '02_product_faq', '03_tech_api_guide'] scores: [0.179705, 0.054089, 0.0, 0.0, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Query '반차와 병가 정책 알려줘'에 대한 관련 근거를 5개 청크에서 찾았습니다. 주요 근거: # 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상: 15일 기본 + 근속 2년마다 1일 추가, 최대 25일. ## 휴가 종류 - 연차, 반차(오전/오후 4시간), 병가(유급 5일/年, 진단서 필요), 
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.179705 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+    cite -> 07_customer_support 07_customer_support::chunk-0000 score=0.054089 snippet="# 고객 지원 운영 가이드 ## 채널 - 이메일 support@acme.example, 채팅 위젯(웹/앱), 전화 1588-0000 (평일 09..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.0 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.0 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.0 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+
+[q09] query: SEV1 incident response time
+  relevant doc(s): ['05_security_incident']
+  retrieved top-5 doc_ids: ['05_security_incident', '02_product_faq', '01_company_policy', '03_tech_api_guide', '04_hr_vacation'] scores: [0.305476, 0.067558, 0.067428, 0.0, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'SEV1 incident response time'. Key evidence: # Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data breach, active exploitation — response < 1 hour. - SEV2 High: 
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.305476 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.067558 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.067428 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.0 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.0 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+
+[q10] query: Steps after containment in incident playbook
+  relevant doc(s): ['05_security_incident']
+  retrieved top-5 doc_ids: ['05_security_incident', '01_company_policy', '06_ml_training', '03_tech_api_guide', '09_devops_deploy'] scores: [0.223803, 0.074554, 0.069516, 0.037412, 0.016753]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'Steps after containment in incident playbook'. Key evidence: # Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data breach, active exploitation — response < 1 ho
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.223803 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.074554 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 06_ml_training 06_ml_training::chunk-0000 score=0.069516 snippet="# ML Model Training Guide (Internal) ## Environment - Python 3.11, PyTorch 2.4, ..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.037412 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.016753 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+
+[q11] query: ML training optimizer and learning rate
+  relevant doc(s): ['06_ml_training']
+  retrieved top-5 doc_ids: ['06_ml_training', '03_tech_api_guide', '02_product_faq', '01_company_policy', '09_devops_deploy'] scores: [0.223811, 0.083403, 0.037681, 0.037609, 0.034634]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'ML training optimizer and learning rate'. Key evidence: # ML Model Training Guide (Internal) ## Environment - Python 3.11, PyTorch 2.4, CUDA 12.1, Docker image `ml-train:2026a`. - Exper
+    cite -> 06_ml_training 06_ml_training::chunk-0000 score=0.223811 snippet="# ML Model Training Guide (Internal) ## Environment - Python 3.11, PyTorch 2.4, ..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.083403 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.037681 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.037609 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.034634 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+
+[q12] query: What dataset split ratio is used for ML training?
+  relevant doc(s): ['06_ml_training']
+  retrieved top-5 doc_ids: ['06_ml_training', '02_product_faq', '09_devops_deploy', '08_data_privacy', '05_security_incident'] scores: [0.196391, 0.095082, 0.048817, 0.024667, 0.022658]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'What dataset split ratio is used for ML training?'. Key evidence: # ML Model Training Guide (Internal) ## Environment - Python 3.11, PyTorch 2.4, CUDA 12.1, Docker image `ml-train:2026a
+    cite -> 06_ml_training 06_ml_training::chunk-0000 score=0.196391 snippet="# ML Model Training Guide (Internal) ## Environment - Python 3.11, PyTorch 2.4, ..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.095082 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.048817 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+    cite -> 08_data_privacy 08_data_privacy::chunk-0000 score=0.024667 snippet="# Data Privacy & GDPR Compliance ## Principles - Lawfulness, purpose limitation,..."
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.022658 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+
+[q13] query: 고객 지원 P1 SLA 첫 응답 시간
+  relevant doc(s): ['07_customer_support']
+  retrieved top-5 doc_ids: ['07_customer_support', '02_product_faq', '01_company_policy', '03_tech_api_guide', '04_hr_vacation'] scores: [0.345806, 0.042553, 0.0, 0.0, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Query '고객 지원 P1 SLA 첫 응답 시간'에 대한 관련 근거를 5개 청크에서 찾았습니다. 주요 근거: # 고객 지원 운영 가이드 ## 채널 - 이메일 support@acme.example, 채팅 위젯(웹/앱), 전화 1588-0000 (평일 09:00–18:00 KST). ## 티켓 분류 - 일반문의, 버그제보, 결제/환불, 계정/보안. - 우선순위: P1(서비스 장애), P2(기능
+    cite -> 07_customer_support 07_customer_support::chunk-0000 score=0.345806 snippet="# 고객 지원 운영 가이드 ## 채널 - 이메일 support@acme.example, 채팅 위젯(웹/앱), 전화 1588-0000 (평일 09..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.042553 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.0 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.0 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.0 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+
+[q14] query: 환불 정책 7일 이후 어떻게 되나요?
+  relevant doc(s): ['07_customer_support']
+  retrieved top-5 doc_ids: ['07_customer_support', '04_hr_vacation', '01_company_policy', '02_product_faq', '03_tech_api_guide'] scores: [0.313859, 0.076023, 0.0, 0.0, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Query '환불 정책 7일 이후 어떻게 되나요?'에 대한 관련 근거를 5개 청크에서 찾았습니다. 주요 근거: # 고객 지원 운영 가이드 ## 채널 - 이메일 support@acme.example, 채팅 위젯(웹/앱), 전화 1588-0000 (평일 09:00–18:00 KST). ## 티켓 분류 - 일반문의, 버그제보, 결제/환불, 계정/보안. - 우선순위: P1(서비스 장애), P2(기능
+    cite -> 07_customer_support 07_customer_support::chunk-0000 score=0.313859 snippet="# 고객 지원 운영 가이드 ## 채널 - 이메일 support@acme.example, 채팅 위젯(웹/앱), 전화 1588-0000 (평일 09..."
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.076023 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.0 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.0 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.0 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+
+[q15] query: GDPR right to be forgotten request handling time
+  relevant doc(s): ['08_data_privacy']
+  retrieved top-5 doc_ids: ['08_data_privacy', '01_company_policy', '05_security_incident', '02_product_faq', '03_tech_api_guide'] scores: [0.270452, 0.156257, 0.060891, 0.048702, 0.024099]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'GDPR right to be forgotten request handling time'. Key evidence: # Data Privacy & GDPR Compliance ## Principles - Lawfulness, purpose limitation, data minimization, accuracy, storage li
+    cite -> 08_data_privacy 08_data_privacy::chunk-0000 score=0.270452 snippet="# Data Privacy & GDPR Compliance ## Principles - Lawfulness, purpose limitation,..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.156257 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.060891 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.048702 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.024099 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+
+[q16] query: Data retention period for logs under privacy policy
+  relevant doc(s): ['08_data_privacy']
+  retrieved top-5 doc_ids: ['08_data_privacy', '05_security_incident', '09_devops_deploy', '01_company_policy', '03_tech_api_guide'] scores: [0.25351, 0.095322, 0.074017, 0.060095, 0.036311]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'Data retention period for logs under privacy policy'. Key evidence: # Data Privacy & GDPR Compliance ## Principles - Lawfulness, purpose limitation, data minimization, accuracy, storage
+    cite -> 08_data_privacy 08_data_privacy::chunk-0000 score=0.25351 snippet="# Data Privacy & GDPR Compliance ## Principles - Lawfulness, purpose limitation,..."
+    cite -> 05_security_incident 05_security_incident::chunk-0000 score=0.095322 snippet="# Security Incident Response Playbook ## Severity Levels - SEV1 Critical: data b..."
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.074017 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.060095 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.036311 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+
+[q17] query: Kubernetes deployment strategy and Helm
+  relevant doc(s): ['09_devops_deploy']
+  retrieved top-5 doc_ids: ['09_devops_deploy', '02_product_faq', '01_company_policy', '03_tech_api_guide', '04_hr_vacation'] scores: [0.267049, 0.041336, 0.041256, 0.024452, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'Kubernetes deployment strategy and Helm'. Key evidence: # DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (ruff) → test (pytest) → build (docker). - Require
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.267049 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.041336 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.041256 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.024452 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.0 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+
+[q18] query: SLO availability and latency target
+  relevant doc(s): ['09_devops_deploy']
+  retrieved top-5 doc_ids: ['09_devops_deploy', '02_product_faq', '01_company_policy', '03_tech_api_guide', '04_hr_vacation'] scores: [0.194165, 0.041336, 0.041256, 0.024452, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Found 5 relevant chunks for query 'SLO availability and latency target'. Key evidence: # DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (ruff) → test (pytest) → build (docker). - Required ch
+    cite -> 09_devops_deploy 09_devops_deploy::chunk-0000 score=0.194165 snippet="# DevOps Deployment Pipeline ## CI/CD - GitHub Actions: on push to main → lint (..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.041336 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.041256 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.024452 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.0 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+
+[q19] query: 경비 청구 식대 한도와 숙박 한도
+  relevant doc(s): ['10_finance_expense']
+  retrieved top-5 doc_ids: ['10_finance_expense', '01_company_policy', '02_product_faq', '03_tech_api_guide', '04_hr_vacation'] scores: [0.405119, 0.0, 0.0, 0.0, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Query '경비 청구 식대 한도와 숙박 한도'에 대한 관련 근거를 5개 청크에서 찾았습니다. 주요 근거: # 경비 청구 및 재무 가이드 ## 청구 한도 - 식대 1인 3만원, 교통비 실비, 숙박 1박 15만원 (수도권) / 12만원 (지방). - 월 한도: 팀원 50만원, 매니저 100만원. ## 절차 1. 영수증 스캔 후 경비 시스템(expenses.acme.example)에 업로드. 2
+    cite -> 10_finance_expense 10_finance_expense::chunk-0000 score=0.405119 snippet="# 경비 청구 및 재무 가이드 ## 청구 한도 - 식대 1인 3만원, 교통비 실비, 숙박 1박 15만원 (수도권) / 12만원 (지방). - 월..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.0 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.0 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.0 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.0 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+
+[q20] query: 해외 출장 승인 절차는?
+  relevant doc(s): ['10_finance_expense']
+  retrieved top-5 doc_ids: ['10_finance_expense', '04_hr_vacation', '01_company_policy', '02_product_faq', '03_tech_api_guide'] scores: [0.298479, 0.042759, 0.0, 0.0, 0.0]
+  Hit@5 (doc): 1  Hit@5 (chunk): 1  citations: 5 [PASS]
+  answer: Query '해외 출장 승인 절차는?'에 대한 관련 근거를 5개 청크에서 찾았습니다. 주요 근거: # 경비 청구 및 재무 가이드 ## 청구 한도 - 식대 1인 3만원, 교통비 실비, 숙박 1박 15만원 (수도권) / 12만원 (지방). - 월 한도: 팀원 50만원, 매니저 100만원. ## 절차 1. 영수증 스캔 후 경비 시스템(expenses.acme.example)에 업로드. 2. 매니저
+    cite -> 10_finance_expense 10_finance_expense::chunk-0000 score=0.298479 snippet="# 경비 청구 및 재무 가이드 ## 청구 한도 - 식대 1인 3만원, 교통비 실비, 숙박 1박 15만원 (수도권) / 12만원 (지방). - 월..."
+    cite -> 04_hr_vacation 04_hr_vacation::chunk-0000 score=0.042759 snippet="# 휴가 및 연차 정책 (Acme Corp Korea) ## 연차 부여 - 입사 1년 미만: 1개월 개근 시 1일, 최대 11일. - 1년 이상..."
+    cite -> 01_company_policy 01_company_policy::chunk-0000 score=0.0 snippet="# Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible re..."
+    cite -> 02_product_faq 02_product_faq::chunk-0000 score=0.0 snippet="# Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based..."
+    cite -> 03_tech_api_guide 03_tech_api_guide::chunk-0000 score=0.0 snippet="# Atlas API — Developer Guide ## Base URL `https://api.atlas.example/v1` ## Auth..."
+
+------------------------------------------------------------------------
+Hit@5 (doc-level): 20/20 = 1.000 (100.0%)
+Citation validation: ALL PASS (20/20 have >=1 citation)
+
+Negative test: answer without citations -> validate_citations must raise
+  PASS: raised ValueError: Answer has no citations — FAIL (citation required)
+
+CLI smoke: python -m rag.pipeline --query "테스트" --top-k 5 -> JSONL
+  CLI output keys: ['query', 'answer_text', 'citations', 'retrieved'] citations=5
+  CLI JSONL (truncated 400): {"query": "테스트", "answer_text": "Query '테스트'에 대한 관련 근거를 5개 청크에서 찾았습니다. 주요 근거: # Acme Corp Remote Work Policy (2026) ## Overview Acme Corp supports flexible remote work to promote work-life balance while maintaining productivity and collaboration. ## Eligibility - All full-time  | # Nimbus Note — Product FAQ ## What is Nimbus Note? Nimbus Note is a cloud-based note-taking and task management app wi
+
+========================================================================
+OVERALL: Hit@5=1.000 Citation=PASS NegativeTest=PASS
+========================================================================
