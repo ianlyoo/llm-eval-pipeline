@@ -8,7 +8,7 @@ Token counting approximation:
   approximation. For English/Korean mixed docs, empirical ratio ~0.75-1.3x
   vs tiktoken cl100k depending on content.
 
-Output contract (stable for Task 10 synthetic QA):
+Output contract (stable for synthetic QA):
   JSONL {doc_id, chunk_id, text, token_count}
   chunk_id = f"{doc_id}::chunk-{idx:04d}"
 """

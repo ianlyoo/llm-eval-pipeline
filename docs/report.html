@@ -2,7 +2,7 @@
 <html lang="ko">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>llm-eval-pipeline — Task 13 Report</title>
+<title>llm-eval-pipeline — Offline Quality Report</title>
 <style>
 body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;max-width:900px;margin:32px auto;padding:0 24px;line-height:1.6;color:#1a1a1a}
 h1{border-bottom:3px solid #1f6feb;padding-bottom:8px}
@@ -16,7 +16,7 @@ pre{padding:16px;overflow:auto}
 .badge-ok{background:#238636}
 .badge-warn{background:#9e6a03}
 </style>
-<h1>llm-eval-pipeline — Task 13 Report <span class="badge badge-ok">Offline Verified</span></h1>
+<h1>llm-eval-pipeline — Offline Quality Report <span class="badge badge-ok">Offline Verified</span></h1>
 <p>PyTorch 실험 + 검색 메트릭 + 오답노트 + lm-eval before/after — 2026-08-23</p>
 <p>Env: Python 3.13.3 · torch 2.6.0+cpu · transformers 5.8.0 · lm-eval 0.4.9 · <code>device cpu</code></p>
 
@@ -88,5 +88,5 @@ Get-Content out/lm_eval_raw.log | Select-Object -Last 20</pre>
 <tr><td>out/metrics_report.json</td><td>metrics JSON</td></tr>
 <tr><td>out/lm_eval_raw.log</td><td>full lm-eval stdout</td></tr>
 </table>
-<p style="color:#666;font-size:13px">Offline/Online 경계 유지: torch/lm-eval은 offline 검증만, RAGAS는 rag-ops-console(Task 14)에서 구현.</p>
+<p style="color:#666;font-size:13px">Offline/Online 경계 유지: torch/lm-eval은 offline 검증만, RAGAS는 rag-ops-console에서 구현.</p>
 </html>

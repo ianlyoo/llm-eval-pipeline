@@ -1,4 +1,4 @@
-# llm-eval-pipeline — 평가 리포트 (Offline, Task 18)
+# llm-eval-pipeline — 평가 리포트 (Offline)
 
 > Offline 품질 파이프라인 — 합성 데이터 50 → Rule Filter → LLM Judge(목) → Metrics. B(rag-ops-console)와 경계 분리: RAGAS/VectorDB 없음.
 

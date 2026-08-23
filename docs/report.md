@@ -1,4 +1,4 @@
-# llm-eval-pipeline — Task 13 Report (PyTorch 실험 + 검색 메트릭 + 오답노트 + lm-eval before/after)
+# llm-eval-pipeline — Offline Quality Report (PyTorch 실험 + 검색 메트릭 + 오답노트 + lm-eval before/after)
 
 > Offline 품질/학습 평가 — 합성 50개 → Rule 33/17 → Judge 30 → Metrics → PyTorch Tiny + lm-eval gsm8k 20
 > Date: 2026-08-23, Env: Python 3.13.3, torch 2.6.0+cpu, transformers 5.8.0, lm-eval 0.4.9 (hf_vlms cpu 패치), Windows cp949→UTF-8
@@ -148,4 +148,4 @@ Get-Content out/lm_eval_raw.log | Select-Object -Last 20
 4. Optional-dependencies `[eval]` → `pip install -e ".[eval]"` 문서화 유지
 
 ---
-*Offline/Online 경계 유지: 본 레포는 torch/lm-eval을 offline 품질 검증에만 사용, RAGAS는 rag-ops-console(Task 14)에서 구현.*
+*Offline/Online 경계 유지: 본 레포는 torch/lm-eval을 offline 품질 검증에만 사용, RAGAS는 rag-ops-console에서 구현.*
