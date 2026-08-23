@@ -1,16 +1,16 @@
 # llm-eval-pipeline
 
-Offline 품질/학습 평가 파이프라인 — 합성데이터 생성부터 Rule 검증, LLM Judge, 오답 taxonomy, lm-eval 학습 전후 비교까지 Self-Evolve 루프를 닫는 실험 인프라.
+Self-Evolve loop harness — baseline evaluation and post-training evaluation infrastructure (training → re-evaluation measured in next iteration).
 
 > **Offline / Online 경계**
 >
 > - **This repo (offline):** 합성데이터 생성(synthetic data), Rule 필터(rule filter), LLM Judge, 오답 taxonomy, lm-eval before/after — 품질과 학습을 오프라인에서 검증한다.
-> - **Online RAG 운영:** VectorDB, LangGraph, RAGAS 기반 실시간 서빙/모니터링은 [`rag-ops-console`](https://github.com/ianlyoo/rag-ops-console) (placeholder, Task 14)에서 담당한다.
+> - **Online RAG 운영:** VectorDB, LangGraph, RAGAS 기반 실시간 서빙/모니터링은 [`rag-ops-console`](https://github.com/ianlyoo/rag-ops-console)에서 담당한다.
 > - 두 영역은 데이터 계약(data contract)으로만 연결되며, 이 레포는 외부 VectorDB/서빙 인프라에 의존하지 않는다.
 
-## 목차 — JD 정렬
+## Pipeline
 
-> JD 문장 그대로의 5단계 프레임으로 구성한다.
+> Pipeline stages mirror an industrial Self-Evolve loop (synthesis → deterministic checks → LLM validation → error analysis → training harness).
 
 | # | 단계 | 역할 | 모듈 |
 |---|------|------|------|
@@ -20,7 +20,7 @@ Offline 품질/학습 평가 파이프라인 — 합성데이터 생성부터 Ru
 | 4 | **Rule+Judge** | 결정론적 Rule 검증 + LLM Judge 근거 충분성 판정 | `eval/rule_filter.py` + `eval/llm_judge.py` |
 | 5 | **학습전후비교** | lm-eval 기반 before/after로 학습 효과 정량화 | `eval/pytorch_experiment.py` + `eval/metrics.py` |
 
-## 파이프라인 — Mermaid
+## Pipeline Flow
 
 ```mermaid
 flowchart LR
@@ -38,21 +38,35 @@ flowchart LR
     style G fill:#9e6a03,stroke:#d29922,color:#fff
 ```
 
-흐름: **합성데이터 생성 → Rule 검증 → LLM Judge → 오답 taxonomy → lm-eval before/after** — Rule에서 탈락한 케이스와 Judge에서 근거 불충분으로 판정된 케이스 모두 taxonomy로 수집되어 다음 합성 배치의 약점 보완에 반영된다.
+흐름: **합성데이터 생성 → Rule 검증 → LLM Judge → 오답 taxonomy → lm-eval before/after** — Rule에서 탈락한 케이스와 Judge에서 근거 불충분으로 판정된 케이스 모두 taxonomy로 수집되어 다음 합성 배치의 약점 보완 제안에 반영된다. 현재 범위는 synthetic → evaluation → analysis → proposal을 닫으며, 실제 training → re-evaluation → measured improvement는 다음 iteration에서 측정한다.
+
+## Evaluation Modes
+
+### Deterministic Proxy Judge
+
+CI 및 offline reproducibility용 heuristic evaluator — correctness/groundedness/relevance/completeness를 token/numeric overlap으로 1-5점 채점.
+
+### LLM-as-a-Judge
+
+OpenAI-compatible provider (openai/featherless/grok) 기반 실제 LLM 평가 — API 키 있을 때만, prompt에 근거 포함 강제.
+
+### Judge Agreement Experiment
+
+API mode에서 서로 다른 judge model(A vs B)의 disagreement와 variance 비교 — `out/judge_scores.jsonl`, `out/disagreement_cases.jsonl`에 기록.
 
 ## 구조
 
 ```
 llm-eval-pipeline/
-├── rag/                    # 오프라인 RAG 시뮬레이션 (chunk/retrieval) — Tasks 9-10
-│   ├── docs_to_chunks.py   # (예정) 문서 → 청크 분할
-│   └── pipeline.py         # (예정) retrieval 파이프라인
-├── eval/                   # 핵심 평가 모듈 — Tasks 11-13
-│   ├── synthetic_data.py   # (예정) 합성 QA 생성
-│   ├── rule_filter.py      # (예정) 결정론적 검증
-│   ├── llm_judge.py        # (예정) LLM 근거 판정
-│   ├── metrics.py          # (예정) taxonomy/집계
-│   └── pytorch_experiment.py # (예정) PyTorch + lm-eval 실험
+├── rag/                    # 오프라인 RAG 시뮬레이션 (chunk/retrieval)
+│   ├── docs_to_chunks.py   # 문서 → 청크 분할
+│   └── pipeline.py         # retrieval 파이프라인
+├── eval/                   # 핵심 평가 모듈
+│   ├── synthetic_data.py   # 합성 QA 생성
+│   ├── rule_filter.py      # 결정론적 검증
+│   ├── llm_judge.py        # LLM 근거 판정
+│   ├── metrics.py          # taxonomy/집계
+│   └── pytorch_experiment.py # PyTorch + lm-eval 실험
 ├── docs/                   # 설계/리포트 문서
 ├── data/                   # 샘플/픽스처 (대용량 원본은 .gitignore)
 ├── tests/                  # pytest 스위트
@@ -81,7 +95,7 @@ FEATHERLESS_API_KEY=... python -m eval.synthetic_data --llm-provider featherless
 XAI_API_KEY=... python -m eval.synthetic_data --llm-provider grok --model grok-2-latest --chunks data/chunks.jsonl --output data/synthetic_qa.jsonl --count 50
 ```
 
-생성된 `data/synthetic_qa.jsonl`은 Task 11(rule), 12(judge), 13(pytorch), 15(runtime)가 그대로 consume하는 안정적인 스키마이며, 수동 검수 샘플은 `out/synthetic_qa_sample.md`에 5개 원문 + PASS/FAIL 코멘트와 중복률 로그를 포함한다.
+생성된 `data/synthetic_qa.jsonl`은 rule, judge, PyTorch experiment, runtime이 그대로 consume하는 안정적인 스키마이며, 수동 검수 샘플은 `out/synthetic_qa_sample.md`에 5개 원문 + PASS/FAIL 코멘트와 중복률 로그를 포함한다.
 
 ## 설치
 
