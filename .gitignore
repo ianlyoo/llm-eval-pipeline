@@ -27,6 +27,9 @@ out/*.log
 !out/judge_reliability.log
 out/*.json
 !out/rule_report.json
+!out/metrics_report.json
+!out/baseline_metrics.json
+!out/pytorch_experiment_log.json
 out/*.jsonl
 !out/judge_scores.jsonl
 !out/disagreement_cases.jsonl

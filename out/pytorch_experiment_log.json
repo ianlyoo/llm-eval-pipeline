@@ -1,0 +1,91 @@
+{
+  "mode": "train",
+  "epochs": 2,
+  "steps_per_epoch": 50,
+  "batch_size": 16,
+  "lr": 0.001,
+  "seed": 42,
+  "device": "cpu",
+  "best_loss": 0.4356,
+  "logs": [
+    {
+      "step": 1,
+      "epoch": 1,
+      "loss": 0.7615,
+      "acc": 0.375,
+      "lr": 0.001
+    },
+    {
+      "step": 11,
+      "epoch": 1,
+      "loss": 0.7124,
+      "acc": 0.375,
+      "lr": 0.001
+    },
+    {
+      "step": 21,
+      "epoch": 1,
+      "loss": 0.7434,
+      "acc": 0.375,
+      "lr": 0.001
+    },
+    {
+      "step": 31,
+      "epoch": 1,
+      "loss": 0.6122,
+      "acc": 0.75,
+      "lr": 0.001
+    },
+    {
+      "step": 41,
+      "epoch": 1,
+      "loss": 0.6563,
+      "acc": 0.6875,
+      "lr": 0.001
+    },
+    {
+      "step": 51,
+      "epoch": 2,
+      "loss": 0.6242,
+      "acc": 0.75,
+      "lr": 0.001
+    },
+    {
+      "step": 61,
+      "epoch": 2,
+      "loss": 0.5949,
+      "acc": 0.8125,
+      "lr": 0.001
+    },
+    {
+      "step": 71,
+      "epoch": 2,
+      "loss": 0.6036,
+      "acc": 0.75,
+      "lr": 0.001
+    },
+    {
+      "step": 81,
+      "epoch": 2,
+      "loss": 0.5574,
+      "acc": 0.9375,
+      "lr": 0.001
+    },
+    {
+      "step": 91,
+      "epoch": 2,
+      "loss": 0.6019,
+      "acc": 0.75,
+      "lr": 0.001
+    },
+    {
+      "step": 100,
+      "epoch": 2,
+      "loss": 0.5788,
+      "acc": 0.75,
+      "lr": 0.001
+    }
+  ],
+  "torch_version": "2.6.0+cpu",
+  "transformers_version": "5.8.0"
+}
