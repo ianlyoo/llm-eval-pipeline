@@ -1,11 +1,11 @@
 # llm-eval-pipeline
 
-Self-Evolve loop harness — baseline evaluation and post-training evaluation infrastructure (training → re-evaluation measured in next iteration).
+Self-Evolve loop harness — Deterministic RAG evaluation + optional LLM-backed RAGAS 분리 구조의 offline 평가 허브 (training → re-evaluation measured in next iteration). This repo has NO RAGAS — offline has deterministic proxy only.
 
 > **Offline / Online 경계**
 >
-> - **This repo (offline):** 합성데이터 생성(synthetic data), Rule 필터(rule filter), LLM Judge, 오답 taxonomy, lm-eval before/after — 품질과 학습을 오프라인에서 검증한다.
-> - **Online RAG 운영:** VectorDB, LangGraph, RAGAS 기반 실시간 서빙/모니터링은 [`rag-ops-console`](https://github.com/ianlyoo/rag-ops-console)에서 담당한다.
+> - **This repo (offline):** 합성데이터 생성(synthetic data), Rule 필터(rule filter), LLM Judge, 오답 taxonomy, lm-eval before/after — 품질과 학습을 오프라인에서 검증한다. RAGAS는 없으며 Deterministic RAG metrics — no API key, token overlap, CI/regression 기반 proxy(`Hit@5`/`faithfulness` 0.66/0.8034)만 제공한다.
+> - **Online RAG 운영:** VectorDB, LangGraph, Deterministic RAG metrics + optional LLM-backed RAGAS 기반 실시간 서빙/모니터링은 [`rag-ops-console`](https://github.com/ianlyoo/rag-ops-console)에서 담당한다. Optional LLM-backed RAGAS mode — ragas.evaluate(), credentials needed는 online에서만 동작한다.
 > - 두 영역은 데이터 계약(data contract)으로만 연결되며, 이 레포는 외부 VectorDB/서빙 인프라에 의존하지 않는다.
 
 ## Pipeline
@@ -57,9 +57,13 @@ python scripts/compare_rag.py --baseline out/baseline_metrics.json --improved ou
 
 ## Evaluation Modes
 
-### Deterministic Proxy Judge
+### Deterministic RAG metrics — no API key, token overlap, CI/regression
 
-CI 및 offline reproducibility용 heuristic evaluator — correctness/groundedness/relevance/completeness를 token/numeric overlap으로 1-5점 채점.
+CI 및 offline reproducibility용 heuristic evaluator — correctness/groundedness/relevance/completeness를 token/numeric overlap으로 1-5점 채점. This repo는 Deterministic RAG metrics만 제공하며 RAGAS(`context_precision`/`recall`/`faithfulness`)는 online(`rag-ops-console`)에서만 평가한다. Committed 수치는 Deterministic RAG metrics proxy(0.66/0.8034)이며 RAGAS score가 아니다.
+
+### Optional LLM-backed RAGAS mode — ragas.evaluate(), credentials needed (online only)
+
+Online(`rag-ops-console`)에서만 제공 — `ragas.evaluate()` LLM evaluator 기반. 이 레포(offline)에는 없음; 필요 시 `rag-ops-console/eval/ragas_eval.py`에서 credentials 있을 때 동작한다.
 
 ### LLM-as-a-Judge
 
@@ -144,7 +148,7 @@ pip install lm-eval==0.4.9
 | 구분 | 담당 | 기술 |
 |------|------|------|
 | **Offline (this repo)** | 품질·학습 평가 | synthetic data, rule filter, LLM judge, taxonomy, lm-eval before/after |
-| **Online (rag-ops-console)** | RAG 운영 | VectorDB, LangGraph, RAGAS, 서빙/모니터링 |
+| **Online (rag-ops-console)** | RAG 운영 | VectorDB, LangGraph, Deterministic RAG metrics + optional LLM-backed RAGAS, 서빙/모니터링 |
 
 이 레포는 오프라인에서 재현 가능한 평가를 목표로 하며, 온라인 서빙 상태나 외부 VectorDB에 의존하지 않는다.
 
