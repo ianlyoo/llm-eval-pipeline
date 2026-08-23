@@ -9,30 +9,33 @@
 | Synthetic QA | 50 (10 docs x5, dedup 100%) | `data/synthetic_qa.jsonl` + `out/rule_report.json` (total 50) |
 | Rule pass | 33/50 (66.0%) | `out/rule_report.json` |
 | Rule fail | 17/50 (34.0%), 전량 `expected_keyword` | `out/rule_report.json` taxonomy |
-| Hit@5 (proxy) | 0.66 (33/50) | `out/metrics_report.json` hit_at_5.hit_at_k |
-| Faithfulness | 0.8034 (min 0.50 max 1.00) | `out/metrics_report.json` faithfulness |
-| Failure rate | 0.34 (pass_rate 0.66) | `out/metrics_report.json` failure_rate |
+| Hit@5 (proxy) | Measured 0.66 (33/50) — Deterministic Proxy | `out/metrics_report.json` hit_at_5.hit_at_k / `out/baseline_metrics.json` |
+| Faithfulness | Measured 0.8034 (min 0.50 max 1.00) — Deterministic Proxy | `out/metrics_report.json` faithfulness |
+| Failure rate | Measured 0.34 (pass_rate 0.66) | `out/metrics_report.json` failure_rate |
 | Judge variance | mean <0.2, max <1.0 PASS | `out/judge_reliability.log` "Variance check PASS" |
 | PyTorch tiny MLP | 100 steps, best_loss 0.4356, loss 0.7615 -> 0.5788, acc 0.375->0.75 | `out/pytorch_experiment_log.json` |
 | lm-eval gsm8k 20 | gpt2 exact_match 0.05 (flexible+strict, stderr 0.05) | `out/lm_eval_raw.log` |
 
-한 줄 결론: 데이터 재작성으로 Hit@5 66->85% 목표, faithfulness는 이미 높음.
+한 줄 결론: 데이터 재작성으로 Measured Hit@5 0.66 → Target 0.85 (Projected/Roadmap, Deterministic Proxy 기준) 목표, faithfulness Measured 0.8034 → Target 0.88 (Projected) — faithfulness는 이미 높음. After는 Real LLM / Actual training result가 아닌 Simulation 목표치.
 
 ## 2. Metrics 상세 (eval/metrics.py)
 
 ### Hit@5
 
-- 정의: `gold doc_id in retrieved top-5` 비율. 실제 retrieval 로그 없으므로 `expected_keyword pass` proxy (mode=proxy-expected_keyword). `retrieved_map` 주입 시 실 검색 Hit@k로 전환 가능.
-- 수치: `{"hit_at_k": 0.66, "hits": 33, "total": 50, "k": 5, "mode": "proxy-expected_keyword"}` — `python -m eval.metrics` 재현.
+- 정의: `gold doc_id in retrieved top-5` 비율. 실제 retrieval 로그 없으므로 `expected_keyword pass` proxy (mode=proxy-expected_keyword, Deterministic Proxy). `retrieved_map` 주입 시 실 검색 Hit@k로 전환 가능.
+- 수치 (Measured): `{"hit_at_k": 0.66, "hits": 33, "total": 50, "k": 5, "mode": "proxy-expected_keyword"}` — `python -m eval.metrics` 재현.
+- Target (Projected/Roadmap, not measured): `0.85` — answer header 강제 + 동의어 사전 적용 시 예상, Real LLM / Actual training result 아님.
 
 ### Faithfulness
 
-- 정의: `answer_tok in source` overlap + numeric grounding blended (numeric 50% + token 50%). 0.0~1.0.
-- 수치: `0.8034`, 분포 `[0.95, 0.5625, 1.0, 0.94, ...]` 50개 — numeric grounding 통과, token overlap과 keyword 실패 상관 낮음.
+- 정의: `answer_tok in source` overlap + numeric grounding blended (numeric 50% + token 50%). 0.0~1.0. Deterministic Proxy.
+- 수치 (Measured): `0.8034`, 분포 `[0.95, 0.5625, 1.0, 0.94, ...]` 50개 — numeric grounding 통과, token overlap과 keyword 실패 상관 낮음.
+- Target (Projected): `0.88` — not measured, Simulation 목표치.
 
 ### Failure rate
 
 - 정의: `failed/total`, by_rule 분해. 17 fail 모두 `expected_keyword` 단일 규칙 — `out/rule_report.json` taxonomy 수렴.
+- Measured: `0.34` (Target 0.15 Projected).
 
 재현:
 

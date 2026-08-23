@@ -40,6 +40,21 @@ flowchart LR
 
 흐름: **합성데이터 생성 → Rule 검증 → LLM Judge → 오답 taxonomy → lm-eval before/after** — Rule에서 탈락한 케이스와 Judge에서 근거 불충분으로 판정된 케이스 모두 taxonomy로 수집되어 다음 합성 배치의 약점 보완 제안에 반영된다. 현재 범위는 synthetic → evaluation → analysis → proposal을 닫으며, 실제 training → re-evaluation → measured improvement는 다음 iteration에서 측정한다.
 
+## Evaluation — Measured vs Target (fail-closed honesty)
+
+> **Measured** baseline (Deterministic Proxy): `Hit@5 0.66 / faithfulness 0.8034 / failure rate 0.34` — from `out/baseline_metrics.json` + `out/metrics_report.json` (50 samples, `proxy-expected_keyword` mode).
+> **Target** after (Projected / Roadmap / Simulation, not measured): `Hit@5 Target 0.85 / faithfulness Target 0.88` — based on `eval/wrong_note.md` actions 1-2 (answer header + synonym rewrite). Not Real LLM, not Actual training result — requires v2 synthetic + `python -m eval.metrics` to become measured.
+> `out/improved_metrics.json` and `out/comparison.md` are intentionally absent — `scripts/compare_rag.py` fails closed (exit 2) without two distinct measured artifacts. Do NOT treat Target as measured.
+
+```bash
+# Measured baseline repro
+python -m eval.metrics
+Get-Content out/metrics_report.json   # Measured 0.66 / 0.8034
+
+# Fail-closed comparison — correctly fails until measured improved exists
+python scripts/compare_rag.py --baseline out/baseline_metrics.json --improved out/improved_metrics.json
+```
+
 ## Evaluation Modes
 
 ### Deterministic Proxy Judge

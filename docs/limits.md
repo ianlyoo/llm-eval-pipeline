@@ -11,7 +11,7 @@
 - **선택**: 실제 Chroma retrieval 없이 `check_expected_keyword` pass를 Hit@5로 proxy.
 - **장점**: CI 무거움 없음, 50개 전수 deterministic, 0.66으로 병목 단일 규칙 가시화.
 - **한계**: lexical keyword 매칭은 동의어/한영 혼용(`Atlas API rate limit` vs `100 requests/minute`)에서 과소평가. B의 Chroma cosine(0.42 precision)이 더 현실적.
-- **다음**: `eval/metrics.py`에 embedding cosine Hit@5 병렬 계산, proxy vs real 비교 테이블 추가. 합성 v2에서 answer header 강제+동의어 15쌍으로 85% 회귀.
+- **다음**: `eval/metrics.py`에 embedding cosine Hit@5 병렬 계산, proxy vs real 비교 테이블 추가. 합성 v2에서 answer header 강제+동의어 15쌍으로 Target 0.85 (Projected, not measured) 회귀 — 현재 Measured 0.66은 Deterministic Proxy.
 
 ## 3. Faithfulness blended 가중치
 
@@ -32,9 +32,9 @@
 - **PyTorch tiny**: 16->32->2 MLP, 합성 `sum(x)>0` 태스크 — 학습 가능 검증용, 실 모델 학습과 무관. seed 42 deterministic, cuDNN deterministic 로그만.
 - **환경**: Python 3.13.3 / torch 2.6.0+cpu / transformers 5.8.0 / lm-eval 0.4.9, Windows cp949→UTF-8 패치. 다른 OS/버전에서 0.05 미세 변동 가능.
 
-## 6. 개선 로드맵 (A 전용)
+## 6. 개선 로드맵 (A 전용) — Target은 Projected, Measured는 Deterministic Proxy 0.66/0.8034
 
-1. 합성 v2: `check_expected_keyword` self-rewrite로 오답 10 재생성 -> Hit@5 85% 검증
-2. embedding Hit@5 추가 (sentence-transformers) vs proxy 비교
-3. Judge를 `openai` 호출로 교체 시 variance 재측정 (real model variance)
-4. lm-eval limit 100 재실행 (23818 bytes -> 100샘플)
+1. 합성 v2: `check_expected_keyword` self-rewrite로 오답 10 재생성 -> Target Hit@5 0.85 (Projected, not measured) 검증 — Measured 0.66은 유지, 개선 후 실측으로 `out/improved_metrics.json` 생성
+2. embedding Hit@5 추가 (sentence-transformers) vs Deterministic Proxy 비교
+3. Judge를 `openai` 호출로 교체 시 variance 재측정 (Real LLM variance, not Simulation)
+4. lm-eval limit 100 재실행 (23818 bytes -> 100샘플) — Actual training result 측정

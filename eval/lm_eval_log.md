@@ -29,13 +29,14 @@ hf (pretrained=gpt2,device=cpu), gen_kwargs: (None), limit: 20.0, num_fewshot: N
 | **Before (baseline)** | gpt2 (hf, device cpu) | gsm8k (limit 20) | exact_match (flexible-extract) | **0.05** | 0.05 | `out/lm_eval_raw.log` 2026-08-23 02:57, real run |
 | **Before (baseline)** | gpt2 (hf, device cpu) | gsm8k (limit 20) | exact_match (strict-match) | **0.05** | 0.05 | 동일 로그 |
 | **After (target, offline 근거)** | gpt2 + synthetic 보강 (wrong_note 10개 패치 예정) | gsm8k (limit 20 재측정 예정) | exact_match (flexible-extract) | **0.10 (목표)** | — | Hit@5 66.0%→80% 개선 시 수학적 기대 (50샘플 중 7개 keyword 실패 해소) |
-| **Offline Before** | rule proxy | synthetic_qa 50 | Hit@5 / Faithfulness / Failure rate | 0.66 / 0.8034 / 0.34 | — | `out/metrics_report.json` 2026-08-23 |
-| **Offline After (목표)** | rule + rewrite | synthetic_qa 50 v2 | Hit@5 / Faithfulness / Failure rate | **0.85 / 0.88 / 0.15 (목표)** | — | wrong_note 4개 액션 적용 후 재계산 예정 (answer header 강제 + 동의어 사전) |
+| **Offline Before (Measured, Deterministic Proxy)** | rule proxy | synthetic_qa 50 | Hit@5 / Faithfulness / Failure rate | Measured 0.66 / 0.8034 / 0.34 | — | `out/metrics_report.json` + `out/baseline_metrics.json` 2026-08-23 |
+| **Offline After (Target, Projected/Roadmap, not measured)** | rule + rewrite | synthetic_qa 50 v2 | Hit@5 / Faithfulness / Failure rate | Target 0.85 / 0.88 / 0.15 (Projected, Simulation) | — | wrong_note 4개 액션 적용 후 재계산 예정 (answer header 강제 + 동의어 사전) — not Real LLM, not Actual training result |
 
 ### 해석
 
 - gpt2 124M은 gsm8k 5-shot에서 0.05 (1/20 정답) — 소형 모델 한계 + truncation으로 기대 이하. limit 20이라 stderr 0.05로 신뢰구간 넓음, limit 100+에서 재측정 필요.
-- **Before→After가 lm-eval 숫자를 부풀리지 않음**: after는 offline Hit@5 개선 (66%→85%)을 근거로 한 목표치로 명시, 다음 사이클에서 `lm_eval --limit 100`으로 실측 검증한다.
+- **Before→After가 lm-eval 숫자를 부풀리지 않음**: after는 offline Hit@5 Measured 0.66 → Target 0.85 (Projected) 개선을 근거로 한 목표치로 명시, 다음 사이클에서 `lm_eval --limit 100`으로 실측 검증한다. Target 0.85는 not measured, Simulation.
+- **Measured vs Target 분리**: `out/improved_metrics.json` 없음 — fail-closed. Measured baseline 0.66 / 0.8034만 `out/metrics_report.json`에 존재, Target 0.85 / 0.88은 Roadmap.
 - 오답노트와 metrics가 가리키는 병목은 **retrieval Hit@5와 answer keyword 누락**이며, 이는 모델 스케일보다 프롬프트/데이터 품질 이슈 — PyTorch 실험의 synthetic MLP (100 steps, best_loss 0.4356, loss 0.76→0.57)도 동일하게 데이터 보강이 loss보다 중요함을 보여준다.
 
 ## 재현
