@@ -1,4 +1,6 @@
-Judge reliability - 10 samples × 3 runs (seed=42)
+Judge reliability - 10 samples x 3 runs (seed=42) [SIMULATION]
+SIMULATION: deterministic-strict vs lenient with noise, not real LLM (no API key; deterministic proxy)
+Real LLM variance requires --llm-provider openai|featherless|grok + API key; see out/real_judge_comparison.md
 Input: data\synthetic_qa.jsonl  Profiles: default with noise (temp simulation)
 
 Sample idx=40 q="Data privacy 6 principles는?"

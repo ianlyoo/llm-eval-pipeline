@@ -1,11 +1,37 @@
 """LLM-as-a-Judge - 4 metrics (correctness/groundedness/relevance/completeness) 1-5 + reason.
 
-Default: deterministic rule-based (no API key required).
-LLM option: --llm-provider openai|featherless|grok with OpenAI-compatible endpoint, fallback to deterministic.
-Reliability mode: --reliability with 2-model comparison + 3-run variance.
+==============================================================================
+ EVALUATION MODES  (honest labeling - do not misrepresent proxy as real LLM)
+==============================================================================
+ 1) Deterministic Proxy (DEFAULT, no API key)
+    - Heuristic: token/numeric overlap → 1-5 per metric (correctness,
+      groundedness, relevance, completeness) + textual reason.
+    - Zero cost/latency, fully reproducible (seed 42). Used in CI/offline.
+    - Output profile: "default" | strict/lenient shifts for A-vs-B sim.
+
+ 2) Real LLM Judge (requires API key)
+    - --llm-provider openai|featherless|grok  + env API key triggers
+      OpenAI-compatible chat completion (LLM_JUDGE_PROMPT → strict JSON).
+    - Tries LLM first; on failure/no key falls back to Deterministic Proxy
+      with stderr warning "[llm_judge] ... fallback deterministic".
+    - Cost/latency/tokens are real LLM values when LLM succeeds.
+
+ 3) Reliability / Agreement Simulation vs Real
+    - SIMULATION (current committed artifacts): --reliability with
+      --model-a deterministic-strict vs --model-b deterministic-lenient
+      + 3-run noise (random ±1 with 20% prob) → variance <1 PASS is
+      SIMULATION variance, NOT real multi-model variance.
+      Log MUST include: "SIMULATION: deterministic-strict vs lenient
+      with noise, not real LLM" (see reliability log header).
+    - REAL: when --llm-provider is set with valid keys, the same
+      --reliability flag runs 3 real LLM calls (temperature 0.2) and
+      logs real variance/disagreement. See out/real_judge_comparison.md
+      for reproduction commands.
 
 Output schema per line:
-  {question, candidate_answer, reference_answer, source_chunks, scores: {correctness:{score,reason}, ...}, latency_ms, tokens_est, cost_est, run_id, profile}
+  {question, candidate_answer, reference_answer, source_chunks,
+   scores: {correctness:{score,reason}, groundedness:..., relevance:..., completeness:...},
+   latency_ms, tokens_est, cost_est, run_id, profile}
 """
 
 from __future__ import annotations
@@ -600,8 +626,19 @@ def main() -> None:
     log_path.parent.mkdir(parents=True, exist_ok=True)
 
     lines: list[str] = []
-    lines.append(f"Judge reliability - {sample_n} samples × 3 runs (seed={args.seed})")
-    lines.append(f"Input: {in_path}  Profiles: default with noise (temp simulation)")
+    # Label simulation vs real at top - honest distinction (P1-EXPERIMENT)
+    is_simulation = args.llm_provider == "none"
+    if is_simulation:
+        lines.append(f"Judge reliability - {sample_n} samples x 3 runs (seed={args.seed}) [SIMULATION]")
+        lines.append("SIMULATION: deterministic-strict vs lenient with noise, not real LLM (no API key; deterministic proxy)")
+        lines.append("Real LLM variance requires --llm-provider openai|featherless|grok + API key; see out/real_judge_comparison.md")
+    else:
+        lines.append(f"Judge reliability - {sample_n} samples x 3 runs (seed={args.seed}) [REAL LLM: provider={args.llm_provider} model={args.model or 'default'}]")
+        lines.append("Mode: real LLM judge (API key present) - variance is real multi-call variance, not simulation")
+    # Also log to stderr for visibility
+    if is_simulation:
+        print("[llm_judge] SIMULATION: deterministic-strict vs lenient with noise, not real LLM", file=sys.stderr)
+    lines.append(f"Input: {in_path}  Profiles: default with noise (temp simulation)" if is_simulation else f"Input: {in_path}  Provider: {args.llm_provider}  Model: {args.model or 'default'}")
     lines.append("")
 
     all_variances: list[float] = []
