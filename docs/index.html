@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>llm-eval-pipeline — Offline Self-Evolve pipeline using synthetic data generation — evaluate before/after with Rule+LLM Judge and lm-eval harness in measured workloads.</title>
+<meta name="description" content="Offline Self-Evolve pipeline using synthetic data generation — evaluate before/after with Rule+LLM Judge and lm-eval harness in measured workloads.">
+<link rel="canonical" href="https://ianlyoo.github.io/llm-eval-pipeline/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="llm-eval-pipeline — Offline Self-Evolve pipeline using synthetic data generation — evaluate before/after with Rule+LLM Judge and lm-eval harness in measured workloads.">
+<meta property="og:description" content="Offline Self-Evolve pipeline using synthetic data generation — evaluate before/after with Rule+LLM Judge and lm-eval harness in measured workloads.">
+<meta property="og:url" content="https://ianlyoo.github.io/llm-eval-pipeline/">
+<meta property="og:image" content="https://ianlyoo.github.io/llm-eval-pipeline/assets/social-preview.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:type" content="image/png">
+<meta property="og:site_name" content="llm-eval-pipeline">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="llm-eval-pipeline — Offline Self-Evolve pipeline using synthetic data generation — evaluate before/after with Rule+LLM Judge and lm-eval harness in measured workloads.">
+<meta name="twitter:description" content="Offline Self-Evolve pipeline using synthetic data generation — evaluate before/after with Rule+LLM Judge and lm-eval harness in measured workloads.">
+<meta name="twitter:image" content="https://ianlyoo.github.io/llm-eval-pipeline/assets/social-preview.png">
+<meta name="twitter:url" content="https://ianlyoo.github.io/llm-eval-pipeline/">
+<meta name="author" content="ianlyoo">
+<meta name="robots" content="index, follow">
+<link rel="stylesheet" href="./styles.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"llm-eval-pipeline","description":"Offline Self-Evolve pipeline using synthetic data generation — evaluate before/after with Rule+LLM Judge and lm-eval harness in measured workloads.","version":"0.1.0","codeRepository":"https://github.com/ianlyoo/llm-eval-pipeline","url":"https://ianlyoo.github.io/llm-eval-pipeline/","programmingLanguage":"Python","license":"https://spdx.org/licenses/MIT","keywords":["llm-evaluation","llm-judge","lm-eval-harness","pytorch","synthetic-data","data-generation","developer-tools","evaluation","harness","llm","offline-evaluation","self-evolution"],"author":{"@type":"Person","name":"ianlyoo"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header role="banner">
+<div class="container">
+<h1>llm-eval-pipeline</h1>
+<p class="tagline">Offline Self-Evolve pipeline using synthetic data generation — evaluate before/after with Rule+LLM Judge and lm-eval harness in measured workloads.</p>
+<nav aria-label="Primary">
+<ul>
+<li><a href="https://github.com/ianlyoo/llm-eval-pipeline">GitHub Repository</a></li>
+<li><a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/README.md">README</a></li>
+<li><a href="https://github.com/ianlyoo/llm-eval-pipeline/issues">Issues</a></li>
+<li><a href="https://ianlyoo.github.io/llm-eval-pipeline/">Pages</a></li>
+</ul>
+</nav>
+<nav aria-label="Language">
+<ul>
+<li><a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/README.md" lang="en">English</a> | <a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/README.md" lang="ko">한국어</a></li>
+</ul>
+</nav>
+</div>
+</header>
+<main id="main">
+<div class="container">
+<section aria-labelledby="overview-heading">
+<h2 id="overview-heading">Overview</h2>
+<p>Offline evaluation hub for Self-Evolve loops. Generate controlled synthetic QA from chunks, run deterministic Rule checks, validate evidence sufficiency with an LLM Judge, accumulate failures into a taxonomy, and compare before/after with lm-eval and PyTorch — all offline and reproducible.</p>
+<ul>
+<li>Python 3.11, <code>rule-based synthetic QA</code> without API keys (LLM provider optional fallback)</li>
+<li>Verifiable taxonomy and fail-closed metrics (<code>Hit@5</code> / <code>faithfulness</code> proxy)</li>
+<li>Stable data contract consumed by <a href="https://github.com/ianlyoo/rag-ops-console">rag-ops-console</a></li>
+</ul>
+<p><a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/README.md">README</a> — <a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/docs/eval.md">Eval</a> — <a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/docs/limits.md">Limits</a> — <a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/docs/reproducibility.md">Reproducibility</a></p>
+</section>
+<section aria-labelledby="install-heading">
+<h2 id="install-heading">Install</h2>
+<pre><code>git clone https://github.com/ianlyoo/llm-eval-pipeline.git
+cd llm-eval-pipeline
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+pytest -q
+ruff check .</code></pre>
+<pre><code>python -m eval.synthetic_data --chunks data/chunks.jsonl --output data/synthetic_qa.jsonl --count 50 --seed 42
+python -m eval.metrics</code></pre>
+</section>
+<section aria-labelledby="benchmark-heading">
+<h2 id="benchmark-heading">Evaluation — Measured vs Target (fail-closed)</h2>
+<p><strong>Measured baseline</strong> (Deterministic Proxy): <code>Hit@5 0.66 / faithfulness 0.8034</code> from <code>out/metrics_report.json</code> (50 samples, proxy-expected_keyword). Target after is projected, not measured.</p>
+<div class="limitations" role="note" aria-label="Limitations">
+<p><strong>Limitations adjacent to benchmark:</strong> Synthetic QA, rule-based generation, deterministic metrics are token-overlap proxy not LLM-backed RAGAS; one 50-sample run; no training improvement measured in this iteration; <code>out/improved_metrics.json</code> intentionally absent — <code>scripts/compare_rag.py</code> fails closed without two distinct measured artifacts. Do not treat Target as measured.</p>
+</div>
+</section>
+<section aria-labelledby="pipeline-heading">
+<h2 id="pipeline-heading">Pipeline — synthetic → rule → judge → taxonomy → lm-eval</h2>
+<ul>
+<li><strong>Synthetic data</strong> <code>eval/synthetic_data.py</code> — 6 templates, dedup &ge;0.8, every QA carries <code>source_chunks</code></li>
+<li><strong>Rule filter</strong> <code>eval/rule_filter.py</code> — deterministic pass/fail</li>
+<li><strong>LLM Judge</strong> <code>eval/llm_judge.py</code> — evidence sufficiency (OpenAI-compatible)</li>
+<li><strong>Taxonomy</strong> <code>eval/metrics.py</code> — accumulate failures → next-batch fixes</li>
+<li><strong>lm-eval before/after</strong> <code>eval/pytorch_experiment.py</code> — training effect when measured</li>
+</ul>
+</section>
+<section aria-labelledby="links-heading">
+<h2 id="links-heading">Project links</h2>
+<ul>
+<li><a href="https://github.com/ianlyoo/llm-eval-pipeline">Repository: https://github.com/ianlyoo/llm-eval-pipeline</a></li>
+<li><a href="https://github.com/ianlyoo/llm-eval-pipeline/issues">Issues</a></li>
+<li><a href="https://ianlyoo.github.io/llm-eval-pipeline/">Pages canonical: https://ianlyoo.github.io/llm-eval-pipeline/</a></li>
+<li><a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/docs/report.md">Report</a></li>
+<li><a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/LICENSE">License: MIT</a></li>
+<li><a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/README.md">README</a></li>
+</ul>
+</section>
+<section aria-labelledby="license-heading">
+<h2 id="license-heading">License and ownership</h2>
+<p>Owner: <a href="https://github.com/ianlyoo">ianlyoo</a> — License: <a href="https://spdx.org/licenses/MIT">MIT</a> — Version: 0.1.0 — Language: Python</p>
+</section>
+</div>
+</main>
+<footer role="contentinfo">
+<div class="container">
+<p>© 2026 ianlyoo — <a href="https://github.com/ianlyoo/llm-eval-pipeline">llm-eval-pipeline</a> — <a href="https://spdx.org/licenses/MIT">MIT</a> — <a href="https://ianlyoo.github.io/llm-eval-pipeline/sitemap.xml">Sitemap</a> — <a href="https://github.com/ianlyoo/llm-eval-pipeline/blob/master/README.md">README</a></p>
+</div>
+</footer>
+</body>
+</html>
