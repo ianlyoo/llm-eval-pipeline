@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "llm-eval-pipeline"
+version: 0.1.0
+license: MIT
+description: "Offline Self-Evolve pipeline using synthetic data generation — evaluate before/after with Rule+LLM Judge and lm-eval harness in measured workloads."
+keywords:
+  - data-generation
+  - developer-tools
+  - evaluation
+  - harness
+  - llm
+  - llm-evaluation
+  - llm-judge
+  - lm-eval-harness
+  - offline-evaluation
+  - pytorch
+  - self-evolution
+  - synthetic-data
+authors:
+  - family-names: Lyoo
+    given-names: Ian
+    alias: ianlyoo
+repository-code: "https://github.com/ianlyoo/llm-eval-pipeline"
+url: "https://ianlyoo.github.io/llm-eval-pipeline/"
+homepage: "https://github.com/ianlyoo/llm-eval-pipeline"
