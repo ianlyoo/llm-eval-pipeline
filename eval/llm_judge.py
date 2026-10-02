@@ -43,6 +43,10 @@ import random
 import sys
 import time
 
+if __package__ in (None, ""):
+    # Direct script execution adds eval/ to sys.path, but package imports need its parent.
+    sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
+
 # Re-export existing scorer entry points for callers of eval.llm_judge.
 from eval.judge_inputs import resolve_candidate, resolve_sources
 from eval.judge_proxy import (  # noqa: F401 — preserve scorer imports from this module
